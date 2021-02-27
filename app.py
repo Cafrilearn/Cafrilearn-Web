@@ -1,9 +1,4 @@
-from flask_migrate import Migrate
-
-from afrilearn import app, db
-
-migrate = Migrate(app, db)
-
+from afrilearn import app
 
 if __name__ == '__main__':
     app.run(debug=True)
