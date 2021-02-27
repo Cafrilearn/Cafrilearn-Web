@@ -63,8 +63,8 @@ def account():
         flash('Account updated successfully', 'success')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.email.data = current_user.email
+        form.username.data = 'your name' #current_user.username 
+        form.email.data =  'your_email@gmail.com' #current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('users/account.html', title='Account', image_file=image_file, form=form)
 
@@ -75,7 +75,7 @@ def reset_request():
         return render_template('main/home.html')
     form = RequestResetForm()
     if form.validate_on_submit():
-        #user = User.query.filter_by(email=form.email.data).first()  check if user is in database
+        #user = User.query.filter_by(email=form.email.data).first()  check if user is in 
         #send_reset_email(user) send to backend for reset
         flash('An email has been sent with instructions to reset password', 'info')
         return redirect('login')
