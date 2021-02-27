@@ -1,5 +1,4 @@
 from flask import render_template, request
-from flask_login import login_required
 from sqlalchemy import distinct
 
 from afrilearn.courses import courses
@@ -10,13 +9,11 @@ container = 'freelearn'
 
 
 @courses.route('/courses')
-@login_required
 def courses_func():
     return render_template('courses/user_courses.html', title='Courses')
 
 
 @courses.route('/courses/<school>')
-@login_required
 def what_school(school):
     page = request.args.get('page', default=1, type=int)
     _courses = db.session.query(distinct(SubjectContainer.subject)).filter_by(level=school).paginate(per_page=4, page=page)
@@ -29,7 +26,6 @@ def what_school(school):
 
 
 @courses.route('/courses/<school>/<subject>')
-@login_required
 def school_subject(school, subject):
     page = request.args.get('page', default=1, type=int)
     all_level_class = SubjectContainer.query.filter_by(subject=subject).filter_by(level=school).paginate(per_page=4, page=page)
@@ -37,7 +33,6 @@ def school_subject(school, subject):
 
 
 @courses.route('/courses/revision-paper/lkkGHWddTZQKIHfjrdjjkdoeoFGDDldejjlajdiwkao0098ujeWERvf345uu/<string:blob_name>')
-@login_required
 def revision_pdf(blob_name):
     blob = SubjectContainer.query.get(blob_name)
     pdf_url_with_sas_token = blob.get_pdf_url_with_blob_sas_token()

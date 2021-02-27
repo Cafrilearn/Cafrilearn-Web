@@ -1,8 +1,7 @@
 import json, secrets
 
 import requests
-from flask import redirect, url_for, render_template, flash, request
-from flask_login import current_user, login_user, logout_user, login_required
+from flask import redirect, url_for, render_template, flash, request, session
 
 from afrilearn import db, bcrypt
 from afrilearn.models import User, UserModel
@@ -33,8 +32,8 @@ def create_user(payload):
 
 @users.route("/register", methods=['GET', 'POST'])
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+    if 'current_user' in session:
+        return render_template('main/home.html')
     form = RegistrationForm()
     if form.validate_on_submit():
         payload = {
@@ -51,36 +50,7 @@ def register():
     return render_template('users/register.html', title='Register', form=form)
 
 
-@users.route("/login", methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        payload = {
-            "email": form.email.data,
-            "password": form.password.data,
-        }
-        response, result = auth_user(payload)
-        if response.ok:  
-            user = UserModel(email=form.email.data)
-            login_user(user=user, remember=form.remember.data)
-            next_page = request.args.get('next')
-            flash("Log in successful", 'success')
-            return redirect(next_page) if next_page else redirect(url_for('main.home'))
-        else:
-            flash('Login unsuccessful. Check email or password', 'danger')
-    return render_template('users/login.html', title='Login', form=form)
-
-
-@users.route("/logout")
-def logout():
-    logout_user()
-    return redirect(url_for('main.home'))
-
-
 @users.route("/account", methods=['GET', 'POST'])
-@login_required
 def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
@@ -128,3 +98,36 @@ def reset_token(token):
         flash(message='Password Reset Successful. Please log in', category='success')
         return redirect(url_for('users.login'))
     return render_template("users/reset_token.html", title="Reset Password", form=form)
+
+
+
+##########################################################################################
+# My login logout and register implementation
+@users.route('/login', methods = ['GET', 'POST'])
+def login():
+    if 'current_user' in session:
+        return render_template('main/home.html')
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        payload = {
+            "email": form.email.data,
+            "password": form.password.data,
+        }
+        response, result = auth_user(payload)
+        if response.ok:  
+            user = UserModel(email=form.email.data)
+            next_page = request.args.get('next')
+            flash("Log in successful", 'success')
+            return redirect(next_page) if next_page else redirect(url_for('main.home'))
+        else:
+            flash('Login unsuccessful. Check email or password', 'danger')
+    return render_template('users/login.html', title='Login', form=form)
+
+@users.route("/logout")
+def logout():
+
+    session.pop('current_user', None)
+    #later sign out from here
+    #logout_user()
+    return redirect(url_for('main.home'))     
