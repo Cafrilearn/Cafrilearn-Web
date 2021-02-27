@@ -17,6 +17,7 @@ def courses_func():
 def what_school(school):
     page = request.args.get('page', default=1, type=int)
     _courses = db.session.query(distinct(SubjectContainer.subject)).filter_by(level=school).paginate(per_page=4, page=page)
+    print(_courses)
     #_courses = SubjectContainer.query.filter_by(level=school).paginate(per_page=4, page=page)
     if school == 'primary':
         title = 'Primary School Material'

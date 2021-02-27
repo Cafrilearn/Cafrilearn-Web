@@ -1,5 +1,4 @@
 from flask import render_template, request, flash
-from flask_login import current_user
 from sqlalchemy import distinct
 
 from afrilearn import db
@@ -14,7 +13,7 @@ def home():
     form = SearchForm()
     page = request.args.get('page', default=1, type=int)
     _courses = db.session.query(distinct(SubjectContainer.level)).paginate(per_page=2, page=page)
-    return render_template('main/home.html', current_user=current_user, _courses=_courses, form=form, bool_val=True)
+    return render_template('main/home.html', _courses=_courses, form=form, bool_val=True)
 
 
 @main.route('/search')
