@@ -1,6 +1,6 @@
 #Pycharm stuff
 .idea/
-courses.db
+#courses.db
 trials.py
 Pipfile
 Pipfile.lock
@@ -116,9 +116,9 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
-.venv
-env/
+#.env
+#.venv
+#env/
 ENV/
 env.bak/
 venv.bak/
