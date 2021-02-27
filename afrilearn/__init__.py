@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from config import *
@@ -23,18 +22,13 @@ app.config['SQLALCHEMY_BINDS'] = SQLALCHEMY_BINDS
 app.config['AFRILEARN_MAIL_SUBJECT_PREFIX'] = AFRILEARN_MAIL_SUBJECT_PREFIX
 
 db = SQLAlchemy(app)
-login_manager = LoginManager(app)
 mail = Mail(app)
 csrf = CSRFProtect(app)
 bcrypt = Bcrypt(app)
 ma = Marshmallow(app)
 
 db.init_app(app)
-login_manager.init_app(app)
 mail.init_app(app)
-login_manager.login_view = 'users.login'
-login_manager.login_message_category = 'info'
-login_manager.session_protection = 'strong'
 csrf.init_app(app)
 bcrypt.init_app(app)
 ma.init_app(app)

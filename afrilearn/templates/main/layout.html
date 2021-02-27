@@ -22,9 +22,9 @@
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet">
 
     {% if title %}
-    <title>AfriLearn - {{ title }}</title>
+    <title>CafriLearn - {{ title }}</title>
     {% else %}
-    <title>AfriLearn</title>
+    <title>CafriLearn</title>
     {% endif %}
 </head>
 <body>
@@ -52,7 +52,7 @@
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
-                    {% if current_user.is_authenticated %}
+                    {% if session['current_user'] %}
                     <a class="nav-item nav-link" href="{{ url_for('courses.courses_func') }}">Courses</a>
                     <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
                     <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>

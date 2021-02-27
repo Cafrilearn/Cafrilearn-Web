@@ -7,12 +7,10 @@ from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from afrilearn import app, ma, ACCOUNT_NAME, ACCOUNT_KEY
-from afrilearn import db, login_manager
+from afrilearn import db
 
 conn = db.engine.connect()
 
-
-@login_manager.user_loader
 def load_user(user_id):
     _ = user_id.split("/")[-1]
     email = user_id.split("/")[0]
