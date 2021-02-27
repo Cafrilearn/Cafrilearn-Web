@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from config import *
 from flask_wtf.csrf import CSRFProtect
@@ -22,16 +21,13 @@ app.config['SQLALCHEMY_BINDS'] = SQLALCHEMY_BINDS
 app.config['AFRILEARN_MAIL_SUBJECT_PREFIX'] = AFRILEARN_MAIL_SUBJECT_PREFIX
 
 db = SQLAlchemy(app)
-mail = Mail(app)
 csrf = CSRFProtect(app)
 bcrypt = Bcrypt(app)
 ma = Marshmallow(app)
 
 db.init_app(app)
-mail.init_app(app)
 csrf.init_app(app)
 bcrypt.init_app(app)
-ma.init_app(app)
 
 from afrilearn.main import main as main_blueprint
 from afrilearn.users import users as users_blueprint

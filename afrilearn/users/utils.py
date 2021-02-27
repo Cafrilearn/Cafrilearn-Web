@@ -3,9 +3,6 @@ import secrets
 
 from PIL import Image
 from flask import url_for
-from flask_mail import Message
-
-from afrilearn import mail, app
 
 
 def save_pic(form_pic):
@@ -29,4 +26,3 @@ def send_reset_email(user):
 
 If you did not request this email, simply ignore this mail.
     """
-    mail.send(msg)
